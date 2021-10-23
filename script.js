@@ -53,12 +53,10 @@ class SnowFlake {
         // sideways speed
         this.dx = Math.round((Math.random() * 8) - 4);
         // downward speed
-        let sideways = Math.abs(this.dx);
-        console.log(sideways)
         this.dy = getRandomIntInclusive(2, 8);
     }
     update() {
-        // if out of bounds mod to random position
+        // if out of bounds move to random position on opposite side of canvas
         if (this.dx > 0 && this.x > canvas.width) {
             this.x = 0 - this.imageObj.width
             this.y = getRandomIntInclusive(0, canvas.height);
