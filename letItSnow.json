@@ -1,6 +1,6 @@
 {
     "snowFlakes": {
-        "number": 90,
+        "number": 30,
         "images": [
             "/images/snowflake1.svg",
             "/images/snowflake2.svg",
@@ -13,7 +13,7 @@
         },
         "sizes": {
             "differentSizes": true,
-            "value": 60,
+            "value": 40,
             "min": 20,
             "max": 50
         },

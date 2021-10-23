@@ -10,13 +10,11 @@ The canvas will be added via JS, and should fit the div it is in. I will tack on
     The config file will have:
         - number of particles
         - an array of routes to svg images (for variety)
-        - an arrary of colors
+        - an arrary of colors (?)
         - variation on sizes
         - variation on opacity of particles
-        - direction of snowflakes (?)
+        - velocity of snowflakes
     I believe I will make a class for the particles
-
-I may use the breakout game I learnt as a starting point to working with canvas.
 
 ## The load function:
 
@@ -24,11 +22,12 @@ called "window.letItSnow(div, config file route);
 
 ## Todo:
 
-change snowflake directions eventually. maybe give min and max options
+allow options for changing the velocity of snowflakes
 check if svg images can have colors changed
 
 ## Progress:
 
 initialized canvas and particles
 added images to canvas
+functioning!
 
