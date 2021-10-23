@@ -1,5 +1,5 @@
 {
-    "particles": {
+    "snowFlakes": {
         "number": 10,
         "images": ["routes"],
         "colors": ["red"],

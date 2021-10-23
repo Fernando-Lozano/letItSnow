@@ -11,7 +11,7 @@ function initializeCanvas(div) {
 
 }
 
-// -------- particles -------
+// -------- snowFlakes -------
 
 let snowFlakes = [];
 // class for generating snowflakes
@@ -56,7 +56,7 @@ function draw() {
     requestAnimationFrame(draw);
 }
 
-// begins the snow effect
+// begins the particle effect
 window.letItSnow = async function(divId, configUrl) {
 
     let params
@@ -73,7 +73,8 @@ window.letItSnow = async function(divId, configUrl) {
     // initialize canvas
     initializeCanvas(divId);
 
-    const { number, images, colors, opacity, sizes } = params.particles;
+    // initialize snowFlakes
+    const { number, images, colors, opacity, sizes } = params.snowFlakes;
     generateSnowFlakes(number, images, colors, opacity, sizes);
     // look up breakout game for further progress...
     draw();
