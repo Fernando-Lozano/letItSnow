@@ -34,6 +34,14 @@ function fix_dpi() {
 // -------- snowFlakes -------
 
 let snowFlakes = [];
+
+// getting a random rumber with min and max inclusive
+function getRandomIntInclusive(min, max) {
+    min = Math.ceil(min);
+    max = Math.floor(max);
+    return Math.floor(Math.random() * (max - min + 1) + min); //The maximum is inclusive and the minimum is inclusive
+}
+
 // class for generating snowflakes
 class SnowFlake {
     constructor(x, y, imageObj) {
@@ -42,14 +50,32 @@ class SnowFlake {
         this.imageObj = imageObj;
     }
     giveDirection() {
-        this.dx = 4;
-        this.dy = 0;
+        // sideways speed
+        this.dx = Math.round((Math.random() * 8) - 4);
+        // downward speed
+        let sideways = Math.abs(this.dx);
+        console.log(sideways)
+        this.dy = getRandomIntInclusive(2, 8);
     }
     update() {
+        // if out of bounds mod to random position
+        if (this.dx > 0 && this.x > canvas.width) {
+            this.x = 0 - this.imageObj.width
+            this.y = getRandomIntInclusive(0, canvas.height);
+        }
+        else if (this.dx < 0 && this.x < 0 - this.imageObj.width) {
+            this.x = canvas.width;
+            this.y = getRandomIntInclusive(0, canvas.height);
+        }
+        if (this.y > canvas.height) {
+            this.y = 0 - this.imageObj.height;
+            this.x = getRandomIntInclusive(0, canvas.width);
+        }
         this.x += this.dx;
         this.y += this.dy;
     }
 }
+
 // creates instances of snowflakes and pushes them into an array
 async function generateSnowFlakes(number, sizes, images, opacity) {
     for (let i = 0; i < number; i++) {
@@ -66,15 +92,8 @@ async function generateSnowFlakes(number, sizes, images, opacity) {
 
         // makes image object
         let imageUrl = images[Math.floor(Math.random() * images.length)];
-        let imageObj;
-        await (function addImageProcess(){
-            return new Promise((resolve, reject) => {
-                imageObj = new Image(size, size)
-                imageObj.onload = () => resolve();
-                imageObj.onerror = reject;
-                imageObj.src = imageUrl;
-            })
-        })();
+        let imageObj = new Image(size, size);
+        imageObj.src = imageUrl;
 
         let oPacity;
         if (opacity.random) {
@@ -100,14 +119,11 @@ async function draw() {
 
     for (let i = 0; i < snowFlakes.length; i++) {
         let { x, y, imageObj } = snowFlakes[i];
-        // imageObj.addEventListener("load", () => {
-        // });
         ctx.globalAlpha = imageObj.style.opacity;
         ctx.drawImage(imageObj, x, y, imageObj.width, imageObj.height);
         snowFlakes[i].update();
     }
-    // requestAnimationFrame(draw);
-    // setInterval(draw, 2000);
+    requestAnimationFrame(draw);
 }
 
 // begins the particle effect
@@ -130,7 +146,6 @@ window.letItSnow = async function(divId, configUrl) {
     // initialize snowFlakes
     const { number, images, opacity, sizes } = params.snowFlakes;
     await generateSnowFlakes(number, sizes, images, opacity);
-    // look up breakout game for further progress...
     draw();
 }
 
