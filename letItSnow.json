@@ -1,0 +1,17 @@
+{
+    "particles": {
+        "number": 10,
+        "images": ["routes"],
+        "colors": ["red"],
+        "opacity": {
+            "random": true,
+            "value": 0.5
+        },
+        "sizes": {
+            "differentSizes": true,
+            "value": 5,
+            "min": 5,
+            "max": 10
+        }
+        }
+}
