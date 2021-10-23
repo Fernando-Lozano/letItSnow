@@ -24,6 +24,7 @@ called "window.letItSnow(div, config file route);
 
 ## Todo:
 
+remove color options to config and snowflake init (they will have to provide the desired images and colors)
 get svg images
 learn about drawing svg images to canvas
 check if svg images can have colors changed
@@ -32,4 +33,5 @@ add into the draw function
 ## Progress:
 
 initialized canvas and particles
+added images to canvas
 

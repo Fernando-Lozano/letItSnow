@@ -1,17 +1,21 @@
 {
     "snowFlakes": {
-        "number": 10,
-        "images": ["routes"],
-        "colors": ["red"],
+        "number": 60,
+        "images": [
+            "/images/snowflake1.svg",
+            "/images/snowflake2.svg",
+            "/images/snowflake3.svg",
+            "/images/snowflake4.svg"
+        ],
         "opacity": {
             "random": true,
             "value": 0.5
         },
         "sizes": {
             "differentSizes": true,
-            "value": 5,
-            "min": 5,
-            "max": 10
+            "value": 60,
+            "min": 10,
+            "max": 50
         }
         }
 }
