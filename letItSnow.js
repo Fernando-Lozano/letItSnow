@@ -41,26 +41,32 @@ function getRandomIntInclusive(min, max) {
     return Math.floor(Math.random() * (max - min + 1) + min); //The maximum is inclusive and the minimum is inclusive
 }
 
-// class for generating snowflakes
-class SnowFlake {
-    constructor(x, y, size, imageObj) {
-        this.x = x;
-        this.y = y;
-        this.size = size;
-        this.imageObj = imageObj;
+
+// extend image object
+class Snowflake extends Image {
+    constructor(x, y, size) {
+        super();
+        this.snowFlake = {
+            x,
+            y,
+            size,
+            dx: 0,
+            dy: 0
+        }
     }
     giveDirection(velocity) {
+        let that = this.snowFlake;
         let speedV;
         let angleV;
         // get speed
-        let { random:random1, min:min1, max:max1 } = velocity.speed;
+        let { random: random1, min: min1, max: max1 } = velocity.speed;
         if (random1) {
             speedV = getRandomIntInclusive(min1, max1);
         } else {
             speedV = velocity.speed.value;
         }
         // get angle
-        let { random:random2, min:min2, max:max2 } = velocity.angle;
+        let { random: random2, min: min2, max: max2 } = velocity.angle;
         if (random2) {
             angleV = getRandomIntInclusive(min2, max2);
         } else {
@@ -71,42 +77,43 @@ class SnowFlake {
 
         switch (velocity.direction) {
             case "u":
-                this.dy = -side1;
-                Math.round(Math.random()) ? this.dx = -side2 : this.dx = side2;
+                that.dy = -side1;
+                Math.round(Math.random()) ? that.dx = -side2 : that.dx = side2;
                 break;
             case "d":
-                this.dy = side1;
-                Math.round(Math.random()) ? this.dx = -side2 : this.dx = side2;
+                that.dy = side1;
+                Math.round(Math.random()) ? that.dx = -side2 : that.dx = side2;
                 break;
             case "l":
-                this.dx = -side1;
-                Math.round(Math.random()) ? this.dy = -side2 : this.dy = side2;
+                that.dx = -side1;
+                Math.round(Math.random()) ? that.dy = -side2 : that.dy = side2;
                 break;
             case "r":
-                this.dx = side1;
-                Math.round(Math.random()) ? this.dy = -side2 : this.dy = side2;
+                that.dx = side1;
+                Math.round(Math.random()) ? that.dy = -side2 : that.dy = side2;
                 break;
         }
     }
     update() {
+        let that = this.snowFlake;
         // if out of bounds move to random position on opposite side of canvas
-        if (this.dx > 0 && this.x > canvas.width) {
-            this.x = 0 - this.imageObj.width
-            this.y = getRandomIntInclusive(0, canvas.height - this.y);
+        if (that.dx > 0 && that.x > canvas.width) {
+            that.x = 0 - this.width;
+            that.y = getRandomIntInclusive(0, canvas.height - that.y);
         }
-        else if (this.dx < 0 && this.x < 0 - this.imageObj.width) {
-            this.x = canvas.width;
-            this.y = getRandomIntInclusive(0, canvas.height - this.y);
+        else if (that.dx < 0 && that.x < 0 - this.width) {
+            that.x = canvas.width;
+            that.y = getRandomIntInclusive(0, canvas.height - that.y);
         }
-        if (this.y > canvas.height) {
-            this.y = 0 - this.imageObj.height;
-            this.x = getRandomIntInclusive(0, canvas.width - this.x);
-        } else if (this.y < 0 && this.y < 0 - this.imageObj.height) {
-            this.y = canvas.height;
-            this.x = getRandomIntInclusive(0, canvas.width - this.x);
+        if (that.y > canvas.height) {
+            that.y = 0 - this.height;
+            that.x = getRandomIntInclusive(0, canvas.width - that.x);
+        } else if (this.y < 0 && that.y < 0 - this.height) {
+            that.y = canvas.height;
+            that.x = getRandomIntInclusive(0, canvas.width - that.x);
         }
-        this.x += this.dx;
-        this.y += this.dy;
+        that.x += that.dx;
+        that.y += this.snowFlake.dy;
     }
 }
 
@@ -124,20 +131,19 @@ async function generateSnowFlakes(number, sizes, images, opacity, velocity) {
             size = sizes.value;
         }
 
-        // makes image object
         let imageUrl = images[Math.floor(Math.random() * images.length)];
-        let imageObj = new Image();
-        imageObj.src = imageUrl;
-
+        
         let oPacity;
         if (opacity.random) {
             oPacity = Math.ceil(Math.random() * 100) / 100;
         } else {
             oPacity = opacity.value;
         }
-        imageObj.style.opacity = oPacity;
-
-        let snowFlake = new SnowFlake(x, y, size, imageObj);
+        
+        // makes image object
+        let snowFlake = new Snowflake(x, y, size);
+        snowFlake.src = imageUrl;
+        snowFlake.style.opacity = oPacity;
         snowFlake.giveDirection(velocity);
         snowFlakes.push(snowFlake);
     }
@@ -152,9 +158,9 @@ async function draw() {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
 
     for (let i = 0; i < snowFlakes.length; i++) {
-        let { x, y, size, imageObj } = snowFlakes[i];
-        ctx.globalAlpha = imageObj.style.opacity;
-        ctx.drawImage(imageObj, 0, 0, imageObj.width, imageObj.height, x, y, size, size);
+        let { x, y, size } = snowFlakes[i].snowFlake;
+        ctx.globalAlpha = snowFlakes[i].style.opacity;
+        ctx.drawImage(snowFlakes[i], 0, 0, snowFlakes[i].width, snowFlakes[i].height, x, y, size, size);
         snowFlakes[i].update();
     }
     requestAnimationFrame(draw);
