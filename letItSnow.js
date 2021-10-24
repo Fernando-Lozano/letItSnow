@@ -99,18 +99,18 @@ class Snowflake extends Image {
         // if out of bounds move to random position on opposite side of canvas
         if (that.dx > 0 && that.x > canvas.width) {
             that.x = 0 - this.width;
-            that.y = getRandomIntInclusive(0, canvas.height - that.y);
+            that.y = getRandomIntInclusive(0, canvas.height - that.size);
         }
         else if (that.dx < 0 && that.x < 0 - this.width) {
             that.x = canvas.width;
-            that.y = getRandomIntInclusive(0, canvas.height - that.y);
+            that.y = getRandomIntInclusive(0, canvas.height - that.size);
         }
         if (that.y > canvas.height) {
             that.y = 0 - this.height;
-            that.x = getRandomIntInclusive(0, canvas.width - that.x);
+            that.x = getRandomIntInclusive(0, canvas.width - that.size);
         } else if (this.y < 0 && that.y < 0 - this.height) {
             that.y = canvas.height;
-            that.x = getRandomIntInclusive(0, canvas.width - that.x);
+            that.x = getRandomIntInclusive(0, canvas.width - that.size);
         }
         that.x += that.dx;
         that.y += that.dy;
