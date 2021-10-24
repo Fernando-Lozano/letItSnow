@@ -142,7 +142,14 @@ async function generateSnowFlakes(number, sizes, images, opacity, velocity) {
         
         // makes image object
         let snowFlake = new Snowflake(x, y, size);
-        snowFlake.src = imageUrl;
+        await (function() {
+            return new Promise((res, err) => {
+                snowFlake.addEventListener("load", res);
+                snowFlake.addEventListener("error", err);
+                snowFlake.src = imageUrl;
+
+            });
+        })().catch(err => alert("Something is wrong with image paths\n" + err));
         snowFlake.style.opacity = oPacity;
         snowFlake.giveDirection(velocity);
         snowFlakes.push(snowFlake);
@@ -160,7 +167,9 @@ async function draw() {
     for (let i = 0; i < snowFlakes.length; i++) {
         let { x, y, size } = snowFlakes[i].snowFlake;
         ctx.globalAlpha = snowFlakes[i].style.opacity;
-        ctx.drawImage(snowFlakes[i], 0, 0, snowFlakes[i].width, snowFlakes[i].height, x, y, size, size);
+        let scaled = size / snowFlakes[i].width;
+        scaled = Number((snowFlakes[i].height * scaled).toFixed(2));
+        ctx.drawImage(snowFlakes[i], 0, 0, snowFlakes[i].width, snowFlakes[i].height, x, y, size, scaled);
         snowFlakes[i].update();
     }
     requestAnimationFrame(draw);

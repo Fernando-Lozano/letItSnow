@@ -12,8 +12,8 @@
             "value": 0.5
         },
         "sizes": {
-            "differentSizes": true,
-            "value": 40,
+            "differentSizes": false,
+            "value": 60,
             "min": 20,
             "max": 50
         },
