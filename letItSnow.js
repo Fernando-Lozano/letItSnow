@@ -113,7 +113,7 @@ class Snowflake extends Image {
             that.x = getRandomIntInclusive(0, canvas.width - that.x);
         }
         that.x += that.dx;
-        that.y += this.snowFlake.dy;
+        that.y += that.dy;
     }
 }
 
