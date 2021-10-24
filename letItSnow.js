@@ -1,7 +1,6 @@
-// ------- canvas -------
 let canvas;
 let ctx;
-let dpi = window.devicePixelRatio;
+const dpi = window.devicePixelRatio;
 
 
 // ------- initialize canvas -------
@@ -49,11 +48,44 @@ class SnowFlake {
         this.y = y;
         this.imageObj = imageObj;
     }
-    giveDirection() {
-        // sideways speed
-        this.dx = Math.round((Math.random() * 8) - 4);
-        // downward speed
-        this.dy = getRandomIntInclusive(2, 8);
+    giveDirection(velocity) {
+        let speedV;
+        let angleV;
+        // get speed
+        let { random:random1, min:min1, max:max1 } = velocity.speed;
+        if (random1) {
+            speedV = getRandomIntInclusive(min1, max1);
+        } else {
+            speedV = velocity.speed.value;
+        }
+        // get angle
+        let { random:random2, min:min2, max:max2 } = velocity.angle;
+        if (random2) {
+            angleV = getRandomIntInclusive(min2, max2);
+        } else {
+            angleV = velocity.angle.value;
+        }
+        let side1 = Number((Math.cos(angleV * (Math.PI / 180)) * speedV).toFixed(2));
+        let side2 = Number((Math.sqrt((speedV ** 2) - (side1 ** 2))).toFixed(2));
+
+        switch (velocity.direction) {
+            case "u":
+                this.dy = -side1;
+                Math.round(Math.random()) ? this.dx = -side2 : this.dx = side2;
+                break;
+            case "d":
+                this.dy = side1;
+                Math.round(Math.random()) ? this.dx = -side2 : this.dx = side2;
+                break;
+            case "l":
+                this.dx = -side1;
+                Math.round(Math.random()) ? this.dy = -side2 : this.dy = side2;
+                break;
+            case "r":
+                this.dx = side1;
+                Math.round(Math.random()) ? this.dy = -side2 : this.dy = side2;
+                break;
+        }
     }
     update() {
         // if out of bounds move to random position on opposite side of canvas
@@ -68,6 +100,9 @@ class SnowFlake {
         if (this.y > canvas.height) {
             this.y = 0 - this.imageObj.height;
             this.x = getRandomIntInclusive(0, canvas.width);
+        } else if (this.y < 0 && this.y < 0 - this.imageObj.height) {
+            this.y = canvas.height;
+            this.x = getRandomIntInclusive(0, canvas.width);
         }
         this.x += this.dx;
         this.y += this.dy;
@@ -75,7 +110,7 @@ class SnowFlake {
 }
 
 // creates instances of snowflakes and pushes them into an array
-async function generateSnowFlakes(number, sizes, images, opacity) {
+async function generateSnowFlakes(number, sizes, images, opacity, velocity) {
     for (let i = 0; i < number; i++) {
 
         let x = Math.floor(Math.random() * canvas.width);
@@ -102,7 +137,7 @@ async function generateSnowFlakes(number, sizes, images, opacity) {
         imageObj.style.opacity = oPacity;
 
         let snowFlake = new SnowFlake(x, y, imageObj);
-        snowFlake.giveDirection();
+        snowFlake.giveDirection(velocity);
         snowFlakes.push(snowFlake);
     }
 }
@@ -127,7 +162,7 @@ async function draw() {
 // begins the particle effect
 window.letItSnow = async function(divId, configUrl) {
 
-    let params
+    let params;
 
     // load the config file
     await fetch(configUrl).then(response => {
@@ -142,8 +177,8 @@ window.letItSnow = async function(divId, configUrl) {
     initializeCanvas(divId);
 
     // initialize snowFlakes
-    const { number, images, opacity, sizes } = params.snowFlakes;
-    await generateSnowFlakes(number, sizes, images, opacity);
+    const { number, images, opacity, sizes, velocity } = params.snowFlakes;
+    await generateSnowFlakes(number, sizes, images, opacity, velocity);
     draw();
 }
 

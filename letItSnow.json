@@ -18,16 +18,18 @@
             "max": 50
         },
         "velocity": {
-            "direction": "u",
+            "direction": "d",
             "speed": {
                 "random": true,
-                "value": 10
+                "value": 6,
+                "min": 4,
+                "max": 8
             },
             "angle": {
                 "random": true,
-                "value": 45,
-                "min": 0,
-                "max": 90
+                "value": 0,
+                "min": 10,
+                "max": 40
             }
         }
     }
