@@ -43,9 +43,10 @@ function getRandomIntInclusive(min, max) {
 
 // class for generating snowflakes
 class SnowFlake {
-    constructor(x, y, imageObj) {
+    constructor(x, y, size, imageObj) {
         this.x = x;
         this.y = y;
+        this.size = size;
         this.imageObj = imageObj;
     }
     giveDirection(velocity) {
@@ -91,18 +92,18 @@ class SnowFlake {
         // if out of bounds move to random position on opposite side of canvas
         if (this.dx > 0 && this.x > canvas.width) {
             this.x = 0 - this.imageObj.width
-            this.y = getRandomIntInclusive(0, canvas.height);
+            this.y = getRandomIntInclusive(0, canvas.height - this.y);
         }
         else if (this.dx < 0 && this.x < 0 - this.imageObj.width) {
             this.x = canvas.width;
-            this.y = getRandomIntInclusive(0, canvas.height);
+            this.y = getRandomIntInclusive(0, canvas.height - this.y);
         }
         if (this.y > canvas.height) {
             this.y = 0 - this.imageObj.height;
-            this.x = getRandomIntInclusive(0, canvas.width);
+            this.x = getRandomIntInclusive(0, canvas.width - this.x);
         } else if (this.y < 0 && this.y < 0 - this.imageObj.height) {
             this.y = canvas.height;
-            this.x = getRandomIntInclusive(0, canvas.width);
+            this.x = getRandomIntInclusive(0, canvas.width - this.x);
         }
         this.x += this.dx;
         this.y += this.dy;
@@ -118,14 +119,14 @@ async function generateSnowFlakes(number, sizes, images, opacity, velocity) {
 
         let size;
         if (sizes.differentSizes) {
-            size = Math.floor(Math.random() * sizes.max) + sizes.min;
+            size = getRandomIntInclusive(sizes.min, sizes.max);
         } else {
             size = sizes.value;
         }
 
         // makes image object
         let imageUrl = images[Math.floor(Math.random() * images.length)];
-        let imageObj = new Image(size, size);
+        let imageObj = new Image();
         imageObj.src = imageUrl;
 
         let oPacity;
@@ -136,7 +137,7 @@ async function generateSnowFlakes(number, sizes, images, opacity, velocity) {
         }
         imageObj.style.opacity = oPacity;
 
-        let snowFlake = new SnowFlake(x, y, imageObj);
+        let snowFlake = new SnowFlake(x, y, size, imageObj);
         snowFlake.giveDirection(velocity);
         snowFlakes.push(snowFlake);
     }
@@ -151,15 +152,15 @@ async function draw() {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
 
     for (let i = 0; i < snowFlakes.length; i++) {
-        let { x, y, imageObj } = snowFlakes[i];
+        let { x, y, size, imageObj } = snowFlakes[i];
         ctx.globalAlpha = imageObj.style.opacity;
-        ctx.drawImage(imageObj, x, y, imageObj.width, imageObj.height);
+        ctx.drawImage(imageObj, 0, 0, imageObj.width, imageObj.height, x, y, size, size);
         snowFlakes[i].update();
     }
     requestAnimationFrame(draw);
 }
 
-// begins the particle effect
+// begins the snow effect
 window.letItSnow = async function(divId, configUrl) {
 
     let params;
@@ -181,6 +182,3 @@ window.letItSnow = async function(divId, configUrl) {
     await generateSnowFlakes(number, sizes, images, opacity, velocity);
     draw();
 }
-
-let url = "/letItSnow.json";
-window.letItSnow("snowFlakesJS", url);

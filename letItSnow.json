@@ -2,10 +2,10 @@
     "snowFlakes": {
         "number": 30,
         "images": [
-            "/images/snowflake1.svg",
-            "/images/snowflake2.svg",
-            "/images/snowflake3.svg",
-            "/images/snowflake4.svg"
+            "images/snowflake1.svg",
+            "images/snowflake2.svg",
+            "images/snowflake3.svg",
+            "images/snowflake4.svg"
         ],
         "opacity": {
             "random": true,
@@ -29,7 +29,7 @@
                 "random": true,
                 "value": 0,
                 "min": 10,
-                "max": 40
+                "max": 20
             }
         }
     }
