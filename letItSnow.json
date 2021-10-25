@@ -12,10 +12,10 @@
             "value": 0.5
         },
         "sizes": {
-            "differentSizes": false,
+            "random": true,
             "value": 60,
             "min": 20,
-            "max": 50
+            "max": 70
         },
         "velocity": {
             "direction": "d",

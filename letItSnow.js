@@ -125,7 +125,7 @@ async function generateSnowFlakes(number, sizes, images, opacity, velocity) {
         let y = Math.floor(Math.random() * canvas.height);
 
         let size;
-        if (sizes.differentSizes) {
+        if (sizes.random) {
             size = getRandomIntInclusive(sizes.min, sizes.max);
         } else {
             size = sizes.value;
