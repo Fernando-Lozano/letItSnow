@@ -22,7 +22,7 @@ Load letItSnow.js and configure letItSnow.json:
 **JavaScript**
 ```javascript
 /* window.letItSnow(elementId, path to json config file)*/
-window.letItSnow("snowFlakesJS", "/letItSnow.json");
+window.letItSnow("letItSnowJS", "./letItSnow.json");
 ```
 
 **letItSnow.json**
