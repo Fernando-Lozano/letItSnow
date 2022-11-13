@@ -1,20 +1,19 @@
 # Let It Snow
 
-This project has been inspired by particles.js.
+### A lightweight JavaScript library for creating a "snow effect." This project has been inspired by particles.js.
 
-## letItSnow.js
-
-### A lightweight JavaScript library for creating a "snow effect."
+![Let it Snow](./images/screenshot.png)
 
 ------------------------------
 -------------------------------
 ### `Usage`
 
+
 Load letItSnow.js and configure letItSnow.json:
 
 **index.html**
 ```html
-<div id="letItSnowJS"></div>
+<div id="snowFlakesJS"></div>
 
 <script src="./letItSnow.js"></script>
 ```
